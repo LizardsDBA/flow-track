@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FlowTrack | Gestão de Frota</title>
+
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+</head>
+<body>
+
+    <div id="login-view" class="login-screen">
+        <div class="login-card fade-in">
+            <div class="login-logo">
+                <img src="/images/logo.png" alt="FlowTrack" class="login-logo-img" />
+                <p>Gestão de Frotas</p>
+            </div>
+
+            <div class="login-form">
+                <div class="form-group">
+                    <label for="l-matricula">Matrícula</label>
+                    <input
+                        id="l-matricula"
+                        type="text"
+                        placeholder="Ex: TEC001 ou ADMIN001"
+                        autocomplete="off"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="l-senha">Senha</label>
+                    <input
+                        id="l-senha"
+                        type="password"
+                        placeholder="Sua senha"
+                    />
+                </div>
+
+                <button class="btn-primary full-width" onclick="app.login()">Entrar</button>
+                <p id="login-error" class="error-msg" style="display:none;"></p>
+            </div>
+
+            <div class="login-hint">
+                <small>Entre com sua matrícula e senha fornecidas pelo administrador.</small>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-view" class="app-container hidden">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="/images/logo-small.png" alt="FlowTrack" class="sidebar-logo-img" />
+                </div>
+                <div>
+                    <h2>FlowTrack</h2>
+                    <small id="user-role-label">Carregando...</small>
+                </div>
+            </div>
+
+            <nav id="sidebar-menu" class="sidebar-menu"></nav>
+
+            <div class="sidebar-footer">
+                <div id="user-info-sidebar" class="user-info-sidebar"></div>
+                <button class="btn-logout" onclick="app.logout()">
+                    <i class="fi fi-rr-sign-out-alt"></i> Sair
+                </button>
+            </div>
+        </aside>
+
+        <div id="sidebar-overlay" class="sidebar-overlay" onclick="app.closeSidebar()"></div>
+
+        <div class="main-content">
+            <header class="top-bar">
+                <button class="menu-toggle" onclick="app.toggleSidebar()">☰</button>
+                <strong>FlowTrack | Gestão de Frota</strong>
+                <div id="top-user-info" class="top-user-chip"></div>
+            </header>
+
+            <main id="view-content" class="view-area"></main>
+        </div>
+    </div>
+
+    <div id="modal-overlay" class="modal-overlay hidden" onclick="app.closeModal()">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 id="modal-title">Modal</h3>
+                <button class="modal-close" onclick="app.closeModal()">✕</button>
+            </div>
+            <div id="modal-body" class="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="/js/core/config.js"></script>
+    <script src="/js/shared/constants.js"></script>
+    <script src="/js/core/app.js"></script>
+
+    <script src="/js/shared/api.js"></script>
+    <script src="/js/shared/utils.js"></script>
+    <script src="/js/shared/toast.js"></script>
+    <script src="/js/shared/modal.js"></script>
+    <script src="/js/shared/ui.js"></script>
+    <script src="/js/shared/helpers.js"></script>
+
+    <script src="/js/core/router.js"></script>
+
+    <script src="/js/features/auth/auth.js"></script>
+    <script src="/js/features/dashboard/dashboard.js"></script>
+    <script src="/js/features/os/os.js"></script>
+    <script src="/js/features/os/os-modal.js"></script>
+    <script src="/js/features/abastecimentos/abastecimentos.js"></script>
+    <script src="/js/features/usuarios/usuarios.js"></script>
+    <script src="/js/features/dominio/tipos-servico.js"></script>
+    <script src="/js/features/dominio/tipos-despesa.js"></script>
+    <script src="/js/features/dominio/tipos-combustivel.js"></script>
+    <script src="/js/features/viaturas/viaturas.js"></script>
+
+    <script src="/js/core/bootstrap.js"></script>
+</body>
+</html>
