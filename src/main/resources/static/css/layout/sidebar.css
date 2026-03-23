@@ -1,0 +1,117 @@
+.sidebar {
+    width: 260px;
+    background: var(--sidebar-bg);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow-y: auto;
+    transition: width .2s;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid #1e293b;
+}
+
+.sidebar-logo {
+    font-size: 2rem;
+}
+
+.sidebar-header h2 {
+    color: #f1f5f9;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.sidebar-header small {
+    color: var(--sidebar-text);
+    font-size: .75rem;
+}
+
+.sidebar-menu {
+    flex: 1;
+    padding: 1rem .75rem;
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.sidebar-section-label {
+    color: #475569;
+    font-size: .7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    padding: .75rem .5rem .25rem;
+}
+
+.menu-btn {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .6rem .75rem;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: var(--sidebar-text);
+    font-size: .875rem;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: all .15s;
+}
+
+.menu-btn:hover {
+    background: var(--sidebar-hover);
+    color: #f1f5f9;
+}
+
+.menu-btn.active {
+    background: var(--sidebar-active);
+    color: #fff;
+}
+
+.menu-btn .icon {
+    font-size: 1rem;
+    width: 1.2rem;
+    text-align: center;
+}
+
+.sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid #1e293b;
+}
+
+.user-info-sidebar {
+    color: #94a3b8;
+    font-size: .8rem;
+    padding: .4rem .5rem .75rem;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 499;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.sidebar-overlay.open {
+    display: block;
+}
+
+.sidebar-logo-img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #fff;
+    padding: 2px;
+}
