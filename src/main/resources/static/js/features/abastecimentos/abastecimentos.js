@@ -43,6 +43,10 @@ Object.assign(app, {
                 <label>Número da Nota Fiscal</label>
                 <input id="ab-nf" type="text" maxlength="50" placeholder="Ex: 123456"/>
               </div>
+              <div class="form-group">
+                <label>Comprovante (NF / imagem)</label>
+                <input id="ab-comprovante" type="file" accept="image/*,application/pdf"/>
+              </div>
               <div class="form-group span-2">
                 <label>Observação</label>
                 <textarea id="ab-obs" placeholder="Posto, localização..."></textarea>
@@ -71,6 +75,8 @@ Object.assign(app, {
         fd.append('kmAbastecimento', document.getElementById('ab-km').value);
         fd.append('numeroNf', document.getElementById('ab-nf').value);
         fd.append('observacao', document.getElementById('ab-obs').value);
+        const comp = document.getElementById('ab-comprovante')?.files?.[0];
+        if (comp) fd.append('comprovante', comp);
 
         try {
             const res = await fetch(`${API}/api/abastecimentos`, { method: 'POST', body: fd });
