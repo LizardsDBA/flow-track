@@ -16,19 +16,8 @@ Object.assign(app, {
               ${this.kpi('<i class="fi fi-rr-gas-pump"></i>', 'R$ ' + this.fmt(d.totalGastoCombustivel ?? 0), 'Gasto Combustível')}
               ${this.kpi('<i class="fi fi-rr-user"></i>', d.totalTecnicos ?? 0, 'Técnicos Ativos')}
             </div>
-              <div id="dash-os">Carregando...</div>
             </div>
           </div>`;
-
-            try {
-                const os = await this.get('/api/os/abertas');
-                document.getElementById('dash-os').innerHTML = this.tabelaOS(os, true);
-            } catch (e) {
-                console.error(e);
-                document.getElementById('dash-os').innerHTML =
-                    '<div class="empty-state"><div class="empty-icon"><i class="fi fi-rr-clipboard-list"></i></div><p>Erro ao carregar OS abertas.</p></div>';
-            }
-
         } catch (e) {
             console.error(e);
             c.innerHTML = `
