@@ -42,5 +42,27 @@ public class DataInitializer implements CommandLineRunner {
                     .primeiroAcesso(false)
                     .createdAt(LocalDateTime.now())
                     .build());
+
+        if (usuarioRepo.findByMatricula("a1").isEmpty())
+            usuarioRepo.save(Usuario.builder()
+                    .nome("A1")
+                    .matricula("a1")
+                    .senha("a1")
+                    .isAdmin(true)
+                    .ativo(true)
+                    .primeiroAcesso(false)
+                    .createdAt(LocalDateTime.now())
+                    .build());
+
+        if (usuarioRepo.findByMatricula("t1").isEmpty())
+            usuarioRepo.save(Usuario.builder()
+                    .nome("t1")
+                    .matricula("t1")
+                    .senha("t1")
+                    .isAdmin(false)
+                    .ativo(true)
+                    .primeiroAcesso(false)
+                    .createdAt(LocalDateTime.now())
+                    .build());
     }
 }
