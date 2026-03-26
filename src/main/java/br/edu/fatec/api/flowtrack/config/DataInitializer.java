@@ -1,9 +1,11 @@
 package br.edu.fatec.api.flowtrack.config;
 
+import br.edu.fatec.api.flowtrack.entity.TipoCombustivel;
 import br.edu.fatec.api.flowtrack.entity.Usuario;
 import br.edu.fatec.api.flowtrack.entity.Viatura;
 import br.edu.fatec.api.flowtrack.entity.Viatura.StatusViatura;
 import br.edu.fatec.api.flowtrack.entity.Viatura.TipoViatura;
+import br.edu.fatec.api.flowtrack.repository.TipoCombustivelRepository;
 import br.edu.fatec.api.flowtrack.repository.UsuarioRepository;
 import br.edu.fatec.api.flowtrack.repository.ViaturaRepository;
 import java.util.List;
@@ -19,11 +21,13 @@ public class DataInitializer implements CommandLineRunner {
 
     private final UsuarioRepository usuarioRepo;
     private final ViaturaRepository viaturaRepo;
+    private final TipoCombustivelRepository tipoCombustivelRepo;
 
     @Override
     public void run(String... args) {
         seedUsuarios();
         seedViaturas();
+        seedTiposCombustivel();
         System.out.println("Seeds carregados com sucesso.");
     }
 
@@ -87,6 +91,17 @@ public class DataInitializer implements CommandLineRunner {
                         .prefixo(v.pfx()).placa(v.placa()).marca(v.marca()).modelo(v.modelo())
                         .ano(v.ano()).tipo(v.tipo()).status(StatusViatura.DISPONIVEL)
                         .kmAtual(v.km()).ativo(true).createdAt(LocalDateTime.now()).build());
+        }
+    }
+
+    private void seedTiposCombustivel() {
+        for (String nome : List.of("Gasolina", "Etanol", "Diesel", "GNV")) {
+            if (!tipoCombustivelRepo.existsByNomeIgnoreCase(nome)) {
+                tipoCombustivelRepo.save(TipoCombustivel.builder()
+                        .nome(nome)
+                        .ativo(true)
+                        .build());
+            }
         }
     }
 }
