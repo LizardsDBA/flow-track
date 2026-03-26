@@ -109,29 +109,6 @@ Object.assign(app, {
               <div><h2><i class="fi fi-rr-gas-pump"></i> Abastecimentos</h2><p>${data.length} registro(s)</p></div>
               <button class="btn-primary btn-success" onclick="app.modalRegistrarAbastecimento()"><i class="fi fi-rr-gas-pump"></i> Registrar Abastecimento</button>
             </div>
-            <div class="card" style="padding:1rem;margin-bottom:1rem">
-              <div class="form-grid" style="align-items:flex-end">
-                <div class="form-group">
-                  <label>Viatura</label>
-                  <select id="fil-viatura">
-                    <option value="">Todas</option>
-                    ${viaturas.map(v => `<option value="${v.prefixo}">${v.prefixo} — ${v.marca} ${v.modelo}</option>`).join('')}
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>De</label>
-                  <input type="date" id="fil-de"/>
-                </div>
-                <div class="form-group">
-                  <label>Até</label>
-                  <input type="date" id="fil-ate"/>
-                </div>
-                <div class="form-group" style="display:flex;gap:.5rem;align-items:flex-end">
-                  <button class="btn-primary" onclick="app.filtrarAbastecimentos()"><i class="fi fi-rr-search"></i> Filtrar</button>
-                  <button class="btn-secondary" onclick="app.limparFiltrosAbastecimento()">Limpar</button>
-                </div>
-              </div>
-            </div>
             <div id="ab-summary"></div>
             <div class="card"><div class="table-wrap" id="ab-table">
               ${this.tabelaAbastecimentos(data)}
@@ -170,19 +147,12 @@ Object.assign(app, {
     },
 
     atualizarResumoAbastecimentos(data) {
-        const totalValor = data.reduce((s, a) => s + parseFloat(a.valorTotal || 0), 0);
-        const totalLitros = data.reduce((s, a) => s + parseFloat(a.litros || 0), 0);
-        const custoMedio = totalLitros > 0 ? totalValor / totalLitros : 0;
         const el = document.getElementById('ab-summary');
 
         if (!el) return;
 
         el.innerHTML = `
         <div class="kpi-grid" style="margin-bottom:1rem">
-          ${this.kpi('<i class="fi fi-rr-receipt"></i>', data.length, 'Registros')}
-          ${this.kpi('<i class="fi fi-rr-coins"></i>', 'R$ ' + this.fmt(totalValor), 'Total Gasto')}
-          ${this.kpi('<i class="fi fi-rr-gas-pump"></i>', this.fmt(totalLitros) + ' L', 'Total Litros')}
-          ${this.kpi('<i class="fi fi-rr-calculator"></i>', 'R$ ' + this.fmt(custoMedio) + '/L', 'Custo Médio/L')}
         </div>`;
     }
 });

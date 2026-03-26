@@ -31,15 +31,9 @@ Object.assign(app, {
 
         const map = {
             dashboard:        () => this.renderDashboard(c),
-            todasOS:          () => this.renderListaOS(c, false),
-            osAbertas:        () => this.renderListaOS(c, true),
-            minhasOS:         () => this.renderMinhasOS(c),
-            abrirOS:          () => this.renderAbrirOS(c),
             viaturas:         () => this.renderViaturas(c),
             usuarios:         () => this.renderUsuarios(c),
             abastecimentos:   () => this.renderAbastecimentos(c),
-            tiposServico:     () => this.renderTiposServico(c),
-            tiposDespesa:     () => this.renderTiposDespesa(c),
             tiposCombustivel: () => this.renderTiposCombustivel(c),
         };
 
