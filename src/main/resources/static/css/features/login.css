@@ -49,12 +49,12 @@
 }
 
 .login-logo-img {
-    width: 200px;
+    width: 150px;
     margin-bottom: .75rem;
 }
 
 .login-logo p {
     color: var(--text-muted);
-    font-size: .9rem;
+    font-size: 1.2rem;
     margin-top: .25rem;
 }
