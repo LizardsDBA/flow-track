@@ -1,9 +1,12 @@
 .login-screen {
-    min-height: 100vh;
+    position: fixed;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+    padding: 1.5rem;
+    overflow-y: auto;
 }
 
 .login-card {
@@ -57,4 +60,23 @@
     color: var(--text-muted);
     font-size: 1.2rem;
     margin-top: .25rem;
+}
+
+@media (max-width: 480px) {
+    .login-card {
+        padding: 1.75rem 1.25rem;
+        border-radius: 12px;
+    }
+
+    .login-logo h1 {
+        font-size: 1.5rem;
+    }
+
+    .login-logo .logo-icon {
+        font-size: 2.75rem;
+    }
+
+    .login-logo-img {
+        width: 110px;
+    }
 }
