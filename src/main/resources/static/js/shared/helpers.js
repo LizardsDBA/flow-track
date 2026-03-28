@@ -52,7 +52,7 @@ Object.assign(app, {
             return 
         return `<table>
       <thead><tr>
-        <th>OS#</th><th>OS/SGI</th><th>Viatura</th><th>Técnico</th><th>Tipo</th>
+        <th>OS#</th><th>OS/SGI</th><th>Viatura</th><th>Usuário</th><th>Tipo</th>
         <th>Destino</th><th>Requisitante</th>
         <th>KM Saída</th><th>KM Chegada</th><th>Saída</th><th>Status</th><th>Ações</th>
       </tr></thead>
@@ -85,7 +85,7 @@ Object.assign(app, {
 
         return `<table>
       <thead><tr>
-        <th>Viatura</th><th>Técnico</th><th>Matrícula</th><th>Combustível</th>
+        <th>Viatura</th><th>Usuário</th><th>Matrícula</th><th>Combustível</th>
         <th>Litros</th><th>Custo/L</th><th>Valor</th><th>KM</th><th>NF</th><th>Data</th><th>Obs.</th>
       </tr></thead>
       <tbody>${data.map(a => {
