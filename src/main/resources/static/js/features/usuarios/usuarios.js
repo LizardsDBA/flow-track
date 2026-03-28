@@ -19,14 +19,22 @@ Object.assign(app, {
                     ? '<span class="badge badge-primary"><i class="fi fi-rr-crown"></i> Admin</span>'
                     : '<span class="badge badge-gray"><i class="fi fi-rr-user"></i> Técnico</span>'}</td>
                   <td>${u.ativo
-                    ? '<span class="badge badge-success">Ativo</span>'
-                    : '<span class="badge badge-danger">Inativo</span>'}</td>
-                  <td>
-                    <button class="btn-icon" onclick='app.modalEditarUsuario(${JSON.stringify(u)})'><i class="fi fi-rr-pencil"></i></button>
-                    ${u.ativo && u.matricula !== 'ADMIN001'
-                    ? `<button class="btn-icon" onclick="app.desativarUsuario(${u.id})" title="Desativar"><i class="fi fi-rr-trash"></i></button>` 
-                    : (!u.ativo ? `<button class="btn-icon" onclick="app.ativarUsuario(${u.id})" title="Ativar"><i class="fi fi-rr-check-circle"></i></button>` : '')}
-                  </td>
+                    ? '<span class="badge badge-success"><i class="fi fi-rr-check"></i> Ativo</span>'
+                    : '<span class="badge badge-gray"><i class="fi fi-rr-ban"></i> Inativo</span>'}</td>
+                    <td>
+                      <button class="btn-icon" onclick='app.modalEditarUsuario(${JSON.stringify(u)})' title="Editar">
+                        <i class="fi fi-rr-pencil"></i>
+                      </button>
+
+                      ${u.matricula !== 'ADMIN001' ? (u.ativo 
+                        ? `<button class="btn-icon" onclick="app.desativarUsuario(${u.id})" title="Desativar">
+                            <i class="fi fi-rr-trash"></i>
+                          </button>` 
+                        : `<button class="btn-icon" onclick="app.ativarUsuario(${u.id})" title="Ativar">
+                            <i class="fi fi-rr-check-circle"></i>
+                          </button>`
+                      ) : ''}
+                    </td>   
                 </tr>`).join('')}</tbody>
               </table>
             </div></div>
@@ -125,7 +133,7 @@ Object.assign(app, {
     ativarUsuario(id) {
         this.confirmAction(
             '<i class="fi fi-rr-check-circle"></i> Reativar Usuário',
-            'Deseja reativar este usuário no sistema?',
+            'Deseja realmente reativar este usuário no sistema?',
             async () => {
                 const res = await fetch(`/api/usuarios/${id}/ativar`, { method: 'PATCH' });
                 if (res.ok) {
