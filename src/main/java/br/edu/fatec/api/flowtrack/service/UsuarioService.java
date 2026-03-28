@@ -81,6 +81,12 @@ public class UsuarioService {
         repo.save(u);
     }
 
+    public void ativar(Integer id) {
+        var u = repo.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+        u.setAtivo(true);
+        repo.save(u);
+    }
+
     private UsuarioResponse toResponse(Usuario u) {
         return new UsuarioResponse(u.getId(), u.getNome(), u.getMatricula(), u.getIsAdmin(), u.getAtivo());
     }
