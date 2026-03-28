@@ -61,4 +61,13 @@ public class DominioController {
             return ResponseEntity.ok().<Void>build();
         }).orElse(ResponseEntity.notFound().build());
     }
+
+    @PatchMapping("/tipos-combustivel/{id}/ativar")
+    public ResponseEntity<Void> ativarCombustivel(@PathVariable Integer id) {
+        return tipoCombustivelRepo.findById(id).map(t -> {
+            t.setAtivo(true);
+            tipoCombustivelRepo.save(t);
+            return ResponseEntity.ok().<Void>build();
+        }).orElse(ResponseEntity.notFound().build());
+    }
 }

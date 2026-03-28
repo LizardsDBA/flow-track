@@ -14,10 +14,12 @@ Object.assign(app, {
                 <thead><tr><th>Nome</th><th>Status</th><th>Ações</th></tr></thead>
                 <tbody>${data.map(t => `<tr>
                   <td>${t.nome}</td>
-                  <td>${t.ativo ? '<span class="badge badge-success">Ativo</span>' : '<span class="badge badge-danger">Inativo</span>'}</td>
+                  <td>${t.ativo ? '<span class="badge badge-success"><i class="fi fi-rr-check"></i> Ativo</span>' : '<span class="badge badge-gray"><i class="fi fi-rr-ban"></i> Inativo</span>'}</td>
                   <td>
-                    <button class="btn-icon" onclick='app.modalEditarTipoCombustivel(${JSON.stringify(t)})'><i class="fi fi-rr-pencil"></i></button>
-                    ${t.ativo ? `<button class="btn-icon" onclick="app.excluirTipoCombustivel(${t.id})"><i class="fi fi-rr-trash"></i></button>` : ''}
+                    <button class="btn-icon" onclick='app.modalEditarTipoCombustivel(${JSON.stringify(t)})' title="Editar"><i class="fi fi-rr-pencil"></i></button>
+                    ${t.ativo ? 
+                        `<button class="btn-icon" onclick="app.desativarTipoCombustivel(${t.id})" title="Desativar"><i class="fi fi-rr-trash"></i></button>` : 
+                        `<button class="btn-icon" onclick="app.ativarTipoCombustivel(${t.id})" title="Ativar"><i class="fi fi-rr-check-circle"></i></button>`}
                   </td>
                 </tr>`).join('')}</tbody>
               </table>
@@ -71,10 +73,37 @@ Object.assign(app, {
         this.navigate('tiposCombustivel');
     },
 
-    async excluirTipoCombustivel(id) {
-        if (!confirm('Desativar tipo de combustível?')) return;
-        await fetch(`/api/dominio/tipos-combustivel/${id}`, { method: 'DELETE' });
-        this.toast('Tipo desativado.');
-        this.navigate('tiposCombustivel');
+    desativarTipoCombustivel(id) {
+        this.confirmAction(
+            '<i class="fi fi-rr-trash"></i> Desativar Tipo de Combustível',
+            'Deseja realmente desativar este tipo de combustível? Ele não aparecerá mais nos novos abastecimentos.',
+            async () => {
+                const res = await fetch(`/api/dominio/tipos-combustivel/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    this.toast('Tipo desativado.');
+                    this.navigate('tiposCombustivel');
+                } else {
+                    const errorMsg = await res.text();
+                    this.toast(errorMsg || 'Erro ao desativar tipo.', 'error');
+                }
+            }
+        );
+    },
+
+    ativarTipoCombustivel(id) {
+        this.confirmAction(
+            '<i class="fi fi-rr-check-circle"></i> Reativar Tipo de Combustível',
+            'Deseja reativar este tipo de combustível no sistema?',
+            async () => {
+                const res = await fetch(`/api/dominio/tipos-combustivel/${id}/ativar`, { method: 'PATCH' });
+                if (res.ok) {
+                    this.toast('Tipo reativado!');
+                    this.navigate('tiposCombustivel');
+                } else {
+                    const errorMsg = await res.text();
+                    this.toast(errorMsg || 'Erro ao reativar tipo.', 'error');
+                }
+            }
+        );
     }
 });

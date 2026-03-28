@@ -11,7 +11,7 @@ Object.assign(app, {
             </div>
             <div class="card"><div class="table-wrap">
               <table>
-                <thead><tr><th>Prefixo</th><th>Placa</th><th>Veículo</th><th>Ano</th><th>Tipo</th><th>KM</th><th>Status</th><th>Ações</th></tr></thead>
+                <thead><tr><th>Prefixo</th><th>Placa</th><th>Veículo</th><th>Ano</th><th>Tipo</th><th>KM Atual</th><th>Status</th><th>Ações</th></tr></thead>
                 <tbody>${data.map(v => `<tr>
                   <td><strong>${v.prefixo}</strong></td>
                   <td>${v.placa}</td>
@@ -19,10 +19,12 @@ Object.assign(app, {
                   <td>${v.ano}</td>
                   <td>${this.badgeTipo(v.tipo)}</td>
                   <td>${v.kmAtual.toLocaleString('pt-BR')} km</td>
-                  <td>${this.badgeStatus(v.status)}</td>
+                  <td>${v.ativo ? this.badgeStatus(v.status) : '<span class="badge badge-gray"><i class="fi fi-rr-ban"></i> Inativa</span>'}</td>
                   <td>
-                    <button class="btn-icon" onclick='app.modalEditarViatura(${JSON.stringify(v)})'><i class="fi fi-rr-pencil"></i></button>
-                    ${v.ativo ? `<button class="btn-icon" onclick="app.desativarViatura(${v.id})"><i class="fi fi-rr-trash"></i></button>` : ''}
+                    <button class="btn-icon" onclick='app.modalEditarViatura(${JSON.stringify(v)})' title="Editar"><i class="fi fi-rr-pencil"></i></button>
+                    ${v.ativo ? 
+                        `<button class="btn-icon" onclick="app.desativarViatura(${v.id})" title="Desativar"><i class="fi fi-rr-trash"></i></button>` : 
+                        `<button class="btn-icon" onclick="app.ativarViatura(${v.id})" title="Ativar"><i class="fi fi-rr-check-circle"></i></button>`}
                   </td>
                 </tr>`).join('')}
                 </tbody>
@@ -120,10 +122,37 @@ Object.assign(app, {
         this.navigate('viaturas');
     },
 
-    async desativarViatura(id) {
-        if (!confirm('Desativar viatura?')) return;
-        await fetch(`${API}/api/viaturas/${id}`, { method: 'DELETE' });
-        this.toast('Viatura desativada.');
-        this.navigate('viaturas');
+    ativarViatura(id) {
+        this.confirmAction(
+            '<i class="fi fi-rr-check-circle"></i> Reativar Viatura',
+            'Deseja reativar esta viatura no sistema?',
+            async () => {
+                const res = await fetch(`/api/viaturas/${id}/ativar`, { method: 'PATCH' });
+                if (res.ok) {
+                    this.toast('Viatura reativada!');
+                    this.navigate('viaturas');
+                } else {
+                    const errorMsg = await res.text();
+                    this.toast(errorMsg || 'Erro ao reativar viatura.', 'error');
+                }
+            }
+        );
+    },
+
+    desativarViatura(id) {
+        this.confirmAction(
+            '<i class="fi fi-rr-trash"></i> Desativar Viatura',
+            'Deseja remover esta viatura da frota ativa?',
+            async () => {
+                const res = await fetch(`/api/viaturas/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                   this.toast('Viatura desativada.');
+                   this.navigate('viaturas');
+                } else {
+                   const errorMsg = await res.text();
+                   this.toast(errorMsg || 'Erro ao desativar viatura.', 'error');
+                }
+            }
+        );
     }
 });
