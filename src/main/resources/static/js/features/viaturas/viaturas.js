@@ -132,7 +132,8 @@ Object.assign(app, {
                     this.toast('Viatura reativada!');
                     this.navigate('viaturas');
                 } else {
-                    this.toast('Erro ao reativar viatura.', 'error');
+                    const errorMsg = await res.text();
+                    this.toast(errorMsg || 'Erro ao reativar viatura.', 'error');
                 }
             }
         );
@@ -143,9 +144,14 @@ Object.assign(app, {
             '<i class="fi fi-rr-trash"></i> Desativar Viatura',
             'Deseja remover esta viatura da frota ativa?',
             async () => {
-                await fetch(`/api/viaturas/${id}`, { method: 'DELETE' });
-                this.toast('Viatura desativada.');
-                this.navigate('viaturas');
+                const res = await fetch(`/api/viaturas/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                   this.toast('Viatura desativada.');
+                   this.navigate('viaturas');
+                } else {
+                   const errorMsg = await res.text();
+                   this.toast(errorMsg || 'Erro ao desativar viatura.', 'error');
+                }
             }
         );
     }

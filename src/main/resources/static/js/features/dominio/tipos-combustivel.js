@@ -78,9 +78,14 @@ Object.assign(app, {
             '<i class="fi fi-rr-trash"></i> Desativar Tipo de Combustível',
             'Deseja realmente desativar este tipo de combustível? Ele não aparecerá mais nos novos abastecimentos.',
             async () => {
-                await fetch(`/api/dominio/tipos-combustivel/${id}`, { method: 'DELETE' });
-                this.toast('Tipo desativado.');
-                this.navigate('tiposCombustivel');
+                const res = await fetch(`/api/dominio/tipos-combustivel/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    this.toast('Tipo desativado.');
+                    this.navigate('tiposCombustivel');
+                } else {
+                    const errorMsg = await res.text();
+                    this.toast(errorMsg || 'Erro ao desativar tipo.', 'error');
+                }
             }
         );
     },
@@ -95,7 +100,8 @@ Object.assign(app, {
                     this.toast('Tipo reativado!');
                     this.navigate('tiposCombustivel');
                 } else {
-                    this.toast('Erro ao reativar tipo.', 'error');
+                    const errorMsg = await res.text();
+                    this.toast(errorMsg || 'Erro ao reativar tipo.', 'error');
                 }
             }
         );

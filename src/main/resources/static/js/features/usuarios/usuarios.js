@@ -24,7 +24,8 @@ Object.assign(app, {
                   <td>
                     <button class="btn-icon" onclick='app.modalEditarUsuario(${JSON.stringify(u)})'><i class="fi fi-rr-pencil"></i></button>
                     ${u.ativo && u.matricula !== 'ADMIN001'
-                    ? `<button class="btn-icon" onclick="app.desativarUsuario(${u.id})"><i class="fi fi-rr-trash"></i></button>` : ''}
+                    ? `<button class="btn-icon" onclick="app.desativarUsuario(${u.id})" title="Desativar"><i class="fi fi-rr-trash"></i></button>` 
+                    : (!u.ativo ? `<button class="btn-icon" onclick="app.ativarUsuario(${u.id})" title="Ativar"><i class="fi fi-rr-check-circle"></i></button>` : '')}
                   </td>
                 </tr>`).join('')}</tbody>
               </table>
@@ -104,10 +105,37 @@ Object.assign(app, {
         this.navigate('usuarios');
     },
 
-    async desativarUsuario(id) {
-        if (!confirm('Desativar usuário?')) return;
-        await fetch(`${API}/api/usuarios/${id}`, { method: 'DELETE' });
-        this.toast('Usuário desativado.');
-        this.navigate('usuarios');
+    desativarUsuario(id) {
+        this.confirmAction(
+            '<i class="fi fi-rr-trash"></i> Desativar Usuário',
+            'Deseja realmente desativar este usuário? Ele não conseguirá mais acessar o sistema.',
+            async () => {
+                const res = await fetch(`/api/usuarios/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    this.toast('Usuário desativado.');
+                    this.navigate('usuarios');
+                } else {
+                    const errorMsg = await res.text();
+                    this.toast(errorMsg || 'Erro ao desativar usuário.', 'error');
+                }
+            }
+        );
+    },
+
+    ativarUsuario(id) {
+        this.confirmAction(
+            '<i class="fi fi-rr-check-circle"></i> Reativar Usuário',
+            'Deseja reativar este usuário no sistema?',
+            async () => {
+                const res = await fetch(`/api/usuarios/${id}/ativar`, { method: 'PATCH' });
+                if (res.ok) {
+                    this.toast('Usuário reativado!');
+                    this.navigate('usuarios');
+                } else {
+                    const errorMsg = await res.text();
+                    this.toast(errorMsg || 'Erro ao reativar usuário.', 'error');
+                }
+            }
+        );
     }
 });
