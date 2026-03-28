@@ -61,4 +61,14 @@ public class ViaturaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-}
+
+    @PatchMapping("/{id}/ativar")
+    public ResponseEntity<?> ativar(@PathVariable Integer id) {
+        try {
+            service.ativar(id);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+}

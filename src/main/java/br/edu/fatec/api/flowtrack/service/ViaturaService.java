@@ -70,6 +70,12 @@ public class ViaturaService {
         repo.save(v);
     }
 
+    public void ativar(Integer id) {
+        var v = repo.findById(id).orElseThrow(() -> new RuntimeException("Viatura não encontrada."));
+        v.setAtivo(true);
+        repo.save(v);
+    }
+
     public ViaturaResponse toResponse(Viatura v) {
         return new ViaturaResponse(
                 v.getId(), v.getPrefixo(), v.getPlaca(),
