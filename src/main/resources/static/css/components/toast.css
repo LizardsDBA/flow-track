@@ -12,6 +12,7 @@
     transform: translateY(10px);
     transition: all .3s;
     pointer-events: none;
+    max-width: calc(100vw - 2rem);
 }
 
 #toast.show {
