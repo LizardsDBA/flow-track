@@ -96,21 +96,28 @@ Object.assign(app, {
 
     async renderAbastecimentos(c) {
         try {
-            const [data, viaturas] = await Promise.all([
+            let [data, viaturas] = await Promise.all([
                 this.get('/api/abastecimentos'),
                 this.get('/api/viaturas/todas'),
             ]);
+
+            if (!this.user.isAdmin) {
+                data = data.filter(a => a.usuarioMatricula === this.user.matricula);
+            }
 
             this._abastecimentos = data;
 
             c.innerHTML = `
           <div class="fade-in">
             <div class="page-header">
-              <div><h2><i class="fi fi-rr-gas-pump"></i> Abastecimentos</h2></div>
+              <div>
+                <h2><i class="fi fi-rr-gas-pump"></i> Abastecimentos</h2>
+                ${!this.user.isAdmin ? `<p id="ab-count">${data.length} registro(s)</p>` : ''}
+              </div>
               <button class="btn-primary btn-success" onclick="app.modalRegistrarAbastecimento()"><i class="fi fi-rr-gas-pump"></i> Registrar Abastecimento</button>
             </div>
             
-            <div id="ab-summary"></div>
+            ${this.user.isAdmin ? '<div id="ab-summary"></div>' : ''}
 
             <div class="card" style="padding:1rem;margin-bottom:1rem">
               <div class="form-grid" style="align-items:flex-end">
@@ -141,7 +148,9 @@ Object.assign(app, {
             </div></div>
           </div>`;
 
-            this.atualizarResumoAbastecimentos(data);
+            if (this.user.isAdmin) {
+                this.atualizarResumoAbastecimentos(data);
+            }
         } catch (e) {
             console.error(e);
             c.innerHTML = `<div class="card"><div style="padding:1rem;color:#b91c1c">Erro ao carregar abastecimentos.</div></div>`;
@@ -159,17 +168,29 @@ Object.assign(app, {
         if (ate) filtered = filtered.filter(a => new Date(a.dataAbastecimento) <= new Date(ate + 'T23:59:59'));
 
         document.getElementById('ab-table').innerHTML = this.tabelaAbastecimentos(filtered);
-        this.atualizarResumoAbastecimentos(filtered);
+
+        // Verifica quem está logado para atualizar a UI correta
+        if (this.user.isAdmin) {
+            this.atualizarResumoAbastecimentos(filtered);
+        } else {
+            const countEl = document.getElementById('ab-count');
+            if (countEl) countEl.innerText = `${filtered.length} registro(s)`;
+        }
     },
 
     limparFiltrosAbastecimento() {
-        ['fil-viatura', 'fil-de', 'fil-ate'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.value = '';
+        ['fil-viatura','fil-de','fil-ate'].forEach(id => {
+            const el = document.getElementById(id); if (el) el.value = '';
         });
 
         document.getElementById('ab-table').innerHTML = this.tabelaAbastecimentos(this._abastecimentos || []);
-        this.atualizarResumoAbastecimentos(this._abastecimentos || []);
+
+        if (this.user.isAdmin) {
+            this.atualizarResumoAbastecimentos(this._abastecimentos || []);
+        } else {
+            const countEl = document.getElementById('ab-count');
+            if (countEl) countEl.innerText = `${(this._abastecimentos || []).length} registro(s)`;
+        }
     },
 
     atualizarResumoAbastecimentos(data) {
@@ -185,9 +206,9 @@ Object.assign(app, {
         // RENDERIZAÇÃO DOS CARDS
         el.innerHTML = `
         <div class="kpi-grid">
-          ${this.kpi('<i class="fi fi-rr-receipt"></i>',    data.length,                    'Registros')}
-          ${this.kpi('<i class="fi fi-rr-coins"></i>',      'R$ '+this.fmt(totalValor),     'Total Gasto')}
-          ${this.kpi('<i class="fi fi-rr-gas-pump"></i>',   this.fmt(totalLitros)+' L',     'Total Litros')}
+          ${this.kpi('<i class="fi fi-rr-receipt"></i>', data.length, 'Registros')}
+          ${this.kpi('<i class="fi fi-rr-coins"></i>', 'R$ '+this.fmt(totalValor), 'Total Gasto')}
+          ${this.kpi('<i class="fi fi-rr-gas-pump"></i>', this.fmt(totalLitros)+' L', 'Total Litros')}
           ${this.kpi('<i class="fi fi-rr-calculator"></i>', 'R$ '+this.fmt(custoMedio)+'/L','Custo Médio/L')}
         </div>`;
     }
