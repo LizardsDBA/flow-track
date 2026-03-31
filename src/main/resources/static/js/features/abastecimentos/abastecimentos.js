@@ -173,12 +173,22 @@ Object.assign(app, {
     },
 
     atualizarResumoAbastecimentos(data) {
-        const el = document.getElementById('ab-summary');
+        // CÁLCULOS
+        const totalValor  = data.reduce((s, a) => s + parseFloat(a.valorTotal  || 0), 0);
+        const totalLitros = data.reduce((s, a) => s + parseFloat(a.litros      || 0), 0);
+        // Trata a divisão por zero se não tiver litros
+        const custoMedio  = totalLitros > 0 ? totalValor / totalLitros : 0;
 
+        const el = document.getElementById('ab-summary');
         if (!el) return;
 
+        // RENDERIZAÇÃO DOS CARDS
         el.innerHTML = `
-        <div class="kpi-grid" style="margin-bottom:1rem">
+        <div class="kpi-grid">
+          ${this.kpi('<i class="fi fi-rr-receipt"></i>',    data.length,                    'Registros')}
+          ${this.kpi('<i class="fi fi-rr-coins"></i>',      'R$ '+this.fmt(totalValor),     'Total Gasto')}
+          ${this.kpi('<i class="fi fi-rr-gas-pump"></i>',   this.fmt(totalLitros)+' L',     'Total Litros')}
+          ${this.kpi('<i class="fi fi-rr-calculator"></i>', 'R$ '+this.fmt(custoMedio)+'/L','Custo Médio/L')}
         </div>`;
     }
 });

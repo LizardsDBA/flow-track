@@ -3,7 +3,7 @@ Object.assign(app, {
         try {
             const d = await this.get('/api/abastecimentos/dashboard');
 
-            c.innerHTML = `
+                c.innerHTML = `
           <div class="fade-in">
             <div class="page-header">
               <div><h2><i class="fi fi-rr-chart-histogram"></i>  Painel de Indicadores</h2><p>Visão geral da frota</p></div>
@@ -12,6 +12,7 @@ Object.assign(app, {
               ${this.kpi('<i class="fi fi-rr-car"></i>', d.totalViaturas ?? 0, 'Total Viaturas')}
               ${this.kpi('<i class="fi fi-rr-check"></i>', d.viaturasAtivas ?? 0, 'Viaturas Ativas')}
               ${this.kpi('<i class="fi fi-rr-gas-pump"></i>', d.totalAbastecimentos ?? 0, 'Abastecimentos')}
+              ${this.kpi('<i class="fi fi-rr-coins"></i>', 'R$ '+this.fmt(d.totalGastoCombustivel), 'Gasto Combustível')}
               ${this.kpi('<i class="fi fi-rr-user"></i>', d.totalTecnicos ?? 0, 'Técnicos Ativos')}
             </div>
           </div>`;
