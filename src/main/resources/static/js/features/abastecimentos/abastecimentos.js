@@ -106,10 +106,36 @@ Object.assign(app, {
             c.innerHTML = `
           <div class="fade-in">
             <div class="page-header">
-              <div><h2><i class="fi fi-rr-gas-pump"></i> Abastecimentos</h2><p>${data.length} registro(s)</p></div>
+              <div><h2><i class="fi fi-rr-gas-pump"></i> Abastecimentos</h2></div>
               <button class="btn-primary btn-success" onclick="app.modalRegistrarAbastecimento()"><i class="fi fi-rr-gas-pump"></i> Registrar Abastecimento</button>
             </div>
+            
             <div id="ab-summary"></div>
+
+            <div class="card" style="padding:1rem;margin-bottom:1rem">
+              <div class="form-grid" style="align-items:flex-end">
+                <div class="form-group">
+                  <label>Viatura</label>
+                  <select id="fil-viatura">
+                    <option value="">Todas</option>
+                    ${viaturas.map(v => `<option value="${v.prefixo}">${v.prefixo} — ${v.marca} ${v.modelo}</option>`).join('')}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>De</label>
+                  <input type="date" id="fil-de"/>
+                </div>
+                <div class="form-group">
+                  <label>Até</label>
+                  <input type="date" id="fil-ate"/>
+                </div>
+                <div class="form-group" style="display:flex;gap:.5rem;align-items:flex-end">
+                  <button class="btn-primary" onclick="app.filtrarAbastecimentos()"><i class="fi fi-rr-search"></i> Filtrar</button>
+                  <button class="btn-secondary" onclick="app.limparFiltrosAbastecimento()">Limpar</button>
+                </div>
+              </div>
+            </div>
+
             <div class="card"><div class="table-wrap" id="ab-table">
               ${this.tabelaAbastecimentos(data)}
             </div></div>
