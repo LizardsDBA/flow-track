@@ -22,7 +22,7 @@
                 <p>Gestão de Frotas</p>
             </div>
 
-            <div class="login-form">
+            <form class="login-form" onsubmit="app.login(event)">
                 <div class="form-group">
                     <label for="l-matricula">Matrícula</label>
                     <input id="l-matricula" type="text" placeholder="Ex: TEC001 ou ADMIN001" autocomplete="off" />
@@ -33,9 +33,9 @@
                     <input id="l-senha" type="password" placeholder="Sua senha" />
                 </div>
 
-                <button class="btn-primary full-width" onclick="app.login()">Entrar</button>
+                <button class="btn-primary full-width btn-margin" onclick="app.login()">Entrar</button>
                 <p id="login-error" class="error-msg" style="display:none;"></p>
-            </div>
+            </form>
 
             <div class="login-hint">
                 <small>Entre com sua matrícula e senha fornecidas pelo administrador.</small>

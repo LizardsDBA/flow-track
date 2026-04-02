@@ -52,7 +52,7 @@
 }
 
 .login-logo-img {
-    width: 150px;
+    width: 400px;
     margin-bottom: .75rem;
 }
 
@@ -60,6 +60,12 @@
     color: var(--text-muted);
     font-size: 1.2rem;
     margin-top: .25rem;
+}
+
+.login-form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 @media (max-width: 480px) {
