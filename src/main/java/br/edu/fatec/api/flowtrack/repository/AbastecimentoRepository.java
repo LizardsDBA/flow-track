@@ -21,4 +21,7 @@ public interface AbastecimentoRepository extends JpaRepository<Abastecimento, In
 
     @Query("SELECT COUNT(a) FROM Abastecimento a")
     long totalRegistros();
+
+    @Query("SELECT COALESCE(MAX(a.kmAbastecimento), 0) FROM Abastecimento a WHERE a.viatura.id = :viaturaId")
+    Integer findMaxKmByViaturaId(Integer viaturaId);
 }
