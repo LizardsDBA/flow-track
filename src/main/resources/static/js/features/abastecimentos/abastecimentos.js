@@ -118,13 +118,6 @@ Object.assign(app, {
             <div class="card" style="padding:1rem;margin-bottom:1rem">
               <div class="form-grid" style="align-items:flex-end">
                 <div class="form-group">
-                  <label>Viatura</label>
-                  <select id="fil-viatura">
-                    <option value="">Todas</option>
-                    ${viaturas.map(v => `<option value="${v.prefixo}">${v.prefixo} — ${v.marca} ${v.modelo}</option>`).join('')}
-                  </select>
-                </div>
-                <div class="form-group">
                   <label>De</label>
                   <input type="date" id="fil-de"/>
                 </div>
@@ -132,7 +125,14 @@ Object.assign(app, {
                   <label>Até</label>
                   <input type="date" id="fil-ate"/>
                 </div>
-                <div class="form-group" style="display:flex;gap:.5rem;align-items:flex-end">
+                <div class="form-group">
+                  <label>Viatura</label>
+                  <select id="fil-viatura">
+                    <option value="">Todas</option>
+                    ${viaturas.map(v => `<option value="${v.prefixo}">${v.prefixo} — ${v.marca} ${v.modelo}</option>`).join('')}
+                  </select>
+                </div>
+                <div class="form-group" style="display:flex;gap:.5rem;justify-content: right; flex-direction: row">
                   <button class="btn-primary" onclick="app.filtrarAbastecimentos()"><i class="fi fi-rr-search"></i> Filtrar</button>
                   <button class="btn-secondary" onclick="app.limparFiltrosAbastecimento()">Limpar</button>
                 </div>
