@@ -40,12 +40,8 @@ Object.assign(app, {
                 <input id="ab-valor" type="number" step="0.01" min="0.01" required placeholder="280.50"/>
               </div>
               <div class="form-group">
-                <label>Número da Nota Fiscal</label>
-                <input id="ab-nf" type="text" maxlength="50" placeholder="Ex: 123456"/>
-              </div>
-              <div class="form-group">
-                <label>Comprovante (NF / imagem)</label>
-                <input id="ab-comprovante" type="file" accept="image/*,application/pdf"/>
+                <label>Número da Nota Fiscal *</label>
+                <input id="ab-nf" type="text" maxlength="50" required placeholder="Ex: 123456"/>
               </div>
               <div class="form-group span-2">
                 <label>Observação</label>

@@ -1,5 +1,6 @@
 Object.assign(app, {
-    async login() {
+    async login(e) {
+        if (e) e.preventDefault();
         const matricula = document.getElementById('l-matricula').value.trim();
         const senha = document.getElementById('l-senha').value.trim();
         const err = document.getElementById('login-error');
