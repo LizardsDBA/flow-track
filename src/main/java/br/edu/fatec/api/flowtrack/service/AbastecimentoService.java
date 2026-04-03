@@ -47,11 +47,14 @@ public class AbastecimentoService {
         var viatura = viaturaRepo.findById(viaturaId)
                 .orElseThrow(() -> new RuntimeException("Viatura não encontrada."));
 
+        Integer kmInicial = viatura.getKmAtual();
         Integer kmAtual = repo.findMaxKmByViaturaId(viaturaId);
 
-        if (kmAbastecimento < kmAtual) {
+        Integer kmReferencia = Math.max(kmInicial, kmAtual);
+
+        if (kmAbastecimento < kmReferencia) {
             throw new RuntimeException(
-                    "KM deve ser maior quer o último abastecimento: " + kmAtual
+                    "KM deve ser maior quer o Km atual da viatura"
             );
         }
 
