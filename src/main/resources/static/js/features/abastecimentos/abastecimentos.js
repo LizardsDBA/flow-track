@@ -29,15 +29,31 @@ Object.assign(app, {
               </div>
               <div class="form-group">
                 <label>KM no Abastecimento *</label>
-                <input id="ab-km" type="number" min="0" required placeholder="KM hodômetro"/>
+                <input id="ab-km"
+                   type="text"
+                   inputmode="numeric"
+                   required
+                   placeholder="KM hodômetro"
+                   oninput="this.value = this.value.replace(/\\D/g, '')" 
+                />
               </div>
               <div class="form-group">
                 <label>Litros *</label>
-                <input id="ab-litros" type="number" step="0.001" min="0.001" required placeholder="42.500"/>
+                <input id="ab-litros"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="42,500"
+                    oninput="app.maskDecimal(this, 3)" 
+                />
               </div>
               <div class="form-group">
                 <label>Valor Total (R$) *</label>
-                <input id="ab-valor" type="number" step="0.01" min="0.01" required placeholder="280.50"/>
+                <input id="ab-valor"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="28,50"
+                    oninput="app.maskDecimal(this, 2)" 
+                />
               </div>
               <div class="form-group">
                 <label>Número da Nota Fiscal *</label>
@@ -62,12 +78,25 @@ Object.assign(app, {
     async submitAbastecimento(e) {
         e.preventDefault();
 
+        function parseDecimalBR(valor) {
+            if (!valor) return 0;
+
+            return parseFloat(
+                valor
+                    .replace(/\./g, '') // remove milhar
+                    .replace(',', '.')  // troca decimal
+            );
+        }
+
+        const litros = parseDecimalBR(document.getElementById('ab-litros').value);
+        const valorTotal = parseDecimalBR(document.getElementById('ab-valor').value);
+
         const fd = new FormData();
         fd.append('viaturaId', document.getElementById('ab-viatura').value);
         fd.append('usuarioId', this.user.id);
         fd.append('tipoCombustivel', document.getElementById('ab-comb').value);
-        fd.append('litros', document.getElementById('ab-litros').value);
-        fd.append('valorTotal', document.getElementById('ab-valor').value);
+        fd.append('litros', litros);
+        fd.append('valorTotal', valorTotal);
         fd.append('kmAbastecimento', document.getElementById('ab-km').value);
         fd.append('numeroNf', document.getElementById('ab-nf').value);
         fd.append('observacao', document.getElementById('ab-obs').value);
@@ -207,5 +236,30 @@ Object.assign(app, {
           ${this.kpi('<i class="fi fi-rr-gas-pump"></i>', this.fmt(totalLitros)+' L', 'Total Litros')}
           ${this.kpi('<i class="fi fi-rr-calculator"></i>', 'R$ '+this.fmt(custoMedio)+'/L','Custo Médio/L')}
         </div>`;
+    },
+
+    maskDecimal(input, casas) {
+        // remove tudo que não é número
+        let v = input.value.replace(/\D/g, '');
+
+        if (!v) {
+            input.value = '';
+            return;
+        }
+
+        // adiciona zeros à esquerda se necessário
+        while (v.length <= casas) {
+            v = '0' + v;
+        }
+
+        // separa inteiro e decimal
+        let inteiro = v.slice(0, -casas);
+        let decimal = v.slice(-casas);
+
+        // adiciona separador de milhar
+        inteiro = inteiro.replace(/^0+/, '') || '0';
+        inteiro = inteiro.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+        input.value = `${inteiro},${decimal}`;
     }
 });
