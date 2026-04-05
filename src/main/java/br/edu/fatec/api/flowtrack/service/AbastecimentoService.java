@@ -52,7 +52,7 @@ public class AbastecimentoService {
 
         Integer kmReferencia = Math.max(kmInicial, kmAtual);
 
-        if (kmAbastecimento < kmReferencia) {
+        if (kmAbastecimento <= kmReferencia) {
             throw new RuntimeException(
                     "KM deve ser maior quer o Km atual da viatura"
             );
