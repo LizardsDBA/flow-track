@@ -46,6 +46,18 @@ public class AbastecimentoService {
     ) {
         var viatura = viaturaRepo.findById(viaturaId)
                 .orElseThrow(() -> new RuntimeException("Viatura não encontrada."));
+
+        Integer kmInicial = viatura.getKmAtual();
+        Integer kmAtual = repo.findMaxKmByViaturaId(viaturaId);
+
+        Integer kmReferencia = Math.max(kmInicial, kmAtual);
+
+        if (kmAbastecimento <= kmReferencia) {
+            throw new RuntimeException(
+                    "KM deve ser maior quer o Km atual da viatura"
+            );
+        }
+
         var usuario = usuarioRepo.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 
@@ -69,6 +81,7 @@ public class AbastecimentoService {
                 throw new RuntimeException("Erro ao processar comprovante.");
             }
         }
+
 
         return toResponse(repo.save(builder.build()));
     }
